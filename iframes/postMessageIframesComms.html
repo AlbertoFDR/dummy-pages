@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<body>
+	
+		<h1>postMessage API in <b>iframes</b></h1>
+		<div id="intro">
+			This page checks the communication between the iframe and the parent. For this task, the parent page sends the message 'PARENT MESSAGE' to the iframe, and the iframe sends 'IFRAME MESSAGE' to the parent frame.
+			<br>
+		</div>
+		<hr>
+		<div id='iframe'>
+			<iframe src='http://10.48.1.104:1235/iframes/postMessageIframesCommsIframeListener.html' height="200" width="200"> </iframe>
+			<iframe src='http://10.48.1.104:1234/iframes/postMessageIframesCommsIframeSender.html' height="200" width="200"> </iframe>
+		</div>
+	</body>
+</html> 

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<body>
+	
+		<h1>postMessage API in <b>iframes</b></h1>
+		<hr>
+		<div id="intro">
+			Message:
+		</div>
+		<hr>
+		<div id='iframe'>
+		</div>
+		<script>
+			div = document.getElementById('intro');
+			var div_iframe = document.getElementById('iframe');
+			// Get the permission for geolocation
+			// it will appear a popup
+			navigator.geolocation.getCurrentPosition(
+				(pos) => {
+					console.log(pos.coords);
+					p = document.createElement('p');
+					div = document.getElementById('intro');
+					div.textContent += `Your coords are ${pos.coords.latitude} lat and ${pos.coords.longitude} long.`
+				}
+			);
+	
+			// --------------------------------------------------------- Geolocation
+			// Create the iframe for the communication
+			var iframe = document.createElement('IFRAME');
+			// I use 127.0.0.1 to simulate other Origin 
+			// If is the same Origin (SOP) it would work without allow
+			// Warning in the console because its http
+			//iframe.setAttribute("src", "http://127.0.0.1/iframes/permissions-iframe.html");
+			iframe.setAttribute("src", "http://localhost:1234/iframes/permissions-geolocation-iframe.html");
+			iframe.setAttribute("height", "800");
+			iframe.setAttribute("width", "800");
+			iframe.setAttribute("allow", "geolocation");
+			div_iframe.appendChild(iframe);
+	
+			// --------------------------------------------------------- All permissions
+			// Create the iframe for the communication
+			var iframe = document.createElement('IFRAME');
+			// I use 127.0.0.1 to simulate other Origin 
+			// If is the same Origin (SOP) it would work without allow
+			// Warning in the console because its http
+			//iframe.setAttribute("src", "http://127.0.0.1/iframes/permissions-iframe.html");
+			iframe.setAttribute("src", "http://localhost:1234/iframes/permissions-all-iframe.html");
+			iframe.setAttribute("height", "800");
+			iframe.setAttribute("width", "800");
+			iframe.setAttribute("allow", "accelerometer; ambient-light-sensor; autoplay; battery camera; display-capture; document-domain; encrypted-media; execution-while-not-rendered; execution-while-out-of-viewport; fullscreen; gamepad; geolocation; gyroscope; hid; identity-credentials-get; idle-detection; local-fonts; magnetometer; microphone; midi; payment; picture-in-picture; publickey-credentials-create; publickey-credentials-get; screen-wake-lock; serial; speaker-selection; usb; web-share; xr-spatial-tracking");
+			div_iframe.appendChild(iframe);
+	
+			// --------------------------------------------------------- Permission for origin
+			// Create the iframe for the communication
+			var iframe = document.createElement('IFRAME');
+			// I use 127.0.0.1 to simulate other Origin 
+			// If is the same Origin (SOP) it would work without allow
+			// Warning in the console because its http
+			//iframe.setAttribute("src", "http://127.0.0.1/iframes/permissions-iframe.html");
+			iframe.setAttribute("src", "http://localhost:1234/iframes/permissions-origin-iframe.html");
+			iframe.setAttribute("height", "800");
+			iframe.setAttribute("width", "800");
+			iframe.setAttribute("allow", "geolocation=(http://10.48.1.107/)");
+			div_iframe.appendChild(iframe);
+
+		</script>
+	</body>
+</html>

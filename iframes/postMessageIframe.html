@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<div id="intro">
+			Message from parent: 
+		</div>
+		<script>
+			// Code from: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
+			window.addEventListener(
+				"message",
+				(event) => {
+					var div_intro = document.getElementById("intro");
+					div_intro.innerHTML += String(event.data);
+				},
+				false
+			);
+
+			// Send a message to the iframe
+			window.parent.postMessage("IFRAME MESSAGE","*");
+
+		</script>
+	</body>
+</html>

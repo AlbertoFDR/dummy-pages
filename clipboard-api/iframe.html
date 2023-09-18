@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<body>
+	
+		<h1>Clipboard API test with <b>iframes</b></h1>
+		<div id="intro">
+			Secret: 12345abcd
+		</div>
+		<hr>
+		<div id="iframe">
+		</div>
+		
+		<script>
+			// Request the clipboard from the parent
+			navigator.clipboard.readText().then(() => {
+				console.log("Success getting the permission");
+				iframe = document.createElement("IFRAME"); 
+				iframe.setAttribute("src", "http://localhost/clipboard-api/basic.html")
+				iframe.setAttribute("allow", "clipboard-read; clipboard-write")
+				iframe.setAttribute("width", "900")
+				iframe.setAttribute("height", "900")
+				var div = document.getElementById("iframe");
+				div.appendChild(iframe);
+			}).catch((e) => {console.log(`[dummy-pages] Clipboard permission denied: ${e}`);});
+                </script>
+
+
+	</body>
+</html>

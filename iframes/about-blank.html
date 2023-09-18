@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<body>
+	
+		<h1>About:blank src <b>iframe</b></h1>
+		<div id="intro"> 
+		</div>
+		<hr>
+		<div id='iframe'>
+		</div>
+		<script>
+			// Create the iframe for the communication
+			var iframe = document.createElement('IFRAME');
+			iframe.setAttribute("src", "about:blank");
+			iframe.setAttribute("height", "800");
+			iframe.setAttribute("width", "800");
+			var div_iframe = document.getElementById('iframe');
+			div_iframe.appendChild(iframe);
+
+			// Send a message to the iframe
+			iframe.onload = function() {
+				iframe.contentWindow.document.write("Holaaa")
+			}
+		</script>
+	</body>
+</html>
