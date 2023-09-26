@@ -2,14 +2,13 @@
 <html>
 	<body>
 	
-		<h1>Introduction to <b>iframes</b></h1>
+		<h1>Javascript Src <b>Iframes</b></h1>
 		<div id="intro">
-			This page checks how a javascript iframe could change the page if it complies the SOP (no sandbox key)
+			This page checks how a javascript iframe (src=javascript-code) could change the page if it has not the 'sandbox' key.
 		</div>
-		<hr>
 		<div id='iframe'>
-			<iframe src="javascript:p = document.createElement('p'); p.textContent = 'Message from Iframe'; window.parent.document.body.appendChild(p)"> </iframe>
-			<iframe src="javascript:p = document.createElement('p'); p.textContent = 'This would not work because of sandbox'; window.parent.document.body.appendChild(p)"></iframe>
+			<iframe src="javascript:p = document.createElement('p'); p.textContent = '[Message from Iframe]'; window.parent.document.body.appendChild(p)" height=0 width=0></iframe>
+			<iframe src="javascript:p = document.createElement('p'); p.textContent = '[This would not work because of sandbox]'; window.parent.document.body.appendChild(p)" height=0 width=0 sandbox></iframe>
 		</div>
 	</body>
 </html>

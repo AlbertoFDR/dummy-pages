@@ -2,8 +2,9 @@
 <html>
 	<body>
 	
-		<h1>Permissions <b>Iframes</b></h1>
+		<h1>Geolocalization <b>Iframe</b></h1>
 		<div id="intro">
+			Iframe that tries to request 'getCurrentPosition' and if it works adds a 'p' with the data.
 		</div>
 		<script>
 			div = document.getElementById('intro');
@@ -16,6 +17,7 @@
 					div.textContent += `Your coords are ${pos.coords.latitude} lat and ${pos.coords.longitude} long.`
 				}
 			);
+			console.log(window.name);
 	
 		</script>
 	</body>

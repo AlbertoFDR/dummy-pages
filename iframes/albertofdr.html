@@ -2,8 +2,9 @@
 <html>
 	<body>
 	
-		<h1>About:blank src <b>iframe</b></h1>
+		<h1>MyPage <b>iframe</b> checking onload event</h1>
 		<div id="intro"> 
+			In this webpage I load an iframe of mypage and when the 'onload' event is called it tries to write 'zanahoria' in the iframe. 
 		</div>
 		<hr>
 		<div id='iframe'>
@@ -19,7 +20,7 @@
 
 			// Send a message to the iframe
 			iframe.onload = function() {
-				iframe.contentWindow.document.write("Holaaa")
+				iframe.contentWindow.document.write("zanahoria")
 			}
 		</script>
 	</body>

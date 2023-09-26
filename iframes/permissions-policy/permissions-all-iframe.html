@@ -2,8 +2,9 @@
 <html>
 	<body>
 	
-		<h1>Permissions <b>Iframes</b></h1>
+		<h1>All-permissions <b>Iframe</b></h1>
 		<div id="intro">
+			Iframe that tries to use all the permissions allowed.
 		</div>
 		<script>
 			div = document.getElementById('intro');
@@ -16,8 +17,8 @@
 					div.textContent += `Your coords are ${pos.coords.latitude} lat and ${pos.coords.longitude} long.`
 				}
 			);
-			console.log(window.name);
-	
+			
+			// TODO: Add the rest of permissions
 		</script>
 	</body>
 </html>

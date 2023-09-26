@@ -24,6 +24,7 @@
 			// Set listener to see what's in the clipboard
 			var read = 0;
 			function checkClipboard(){
+				console.log('Checking clipboard');
 				// Set listener to copy
 				navigator.clipboard.readText().then( (clipText) => {
 					console.log(clipText);

