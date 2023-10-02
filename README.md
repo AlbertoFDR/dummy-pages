@@ -7,3 +7,4 @@ I create this project as testing environment. In other words, this toy project a
 - https://public-firing-range.appspot.com/urldom/index.html
 - https://canhas.report/permissions-policy
 - https://dev-pages.brave.software/
+- https://webdbg.com/test/
