@@ -8,9 +8,6 @@ from flask import Flask, make_response, send_file, render_template_string
 app = Flask(__name__)
 DEBUG = True
 
-# ======================== Process list
-process_path_list = []
-
 # -----------------------------> MANUAL HEADERS
 
 # ======================== Content-Security-Policy
@@ -47,15 +44,18 @@ pp_list = [
     "picture-in-picture=(), geolocation=(self https://example.com), camera=*",
 ]
 
-
-# From StackOverflow:
-# https://stackoverflow.com/questions/37427683/python-search-for-a-file-in-current-directory-and-all-its-parents/70859914#70859914
-def find_upwards(cwd: Path, filename: str) -> Path | None:
-    if cwd == Path(cwd.root) or cwd == cwd.parent:
-        return None
-    fullpath = cwd / filename
-    return fullpath if fullpath.exists() else find_upwards(cwd.parent, filename)
-
+@app.before_first_request
+def emulate_other_origin():
+    print("PITOPITO"*20)
+    while True:
+        print("TONTO"*20)
+        popen = subprocess.Popen('./run.sh')
+        time.sleep(1)
+        returncode = popen.poll()
+        if returncode is None:
+            return
+        else:
+            print(f"[ERROR] Error launching run.sh for emulating another origin. Return code: {returncode}")
 
 @app.route('/', defaults={'req_path': ''})
 @app.route('/<path:req_path>')
@@ -71,29 +71,10 @@ def dir(req_path):
     if os.path.isfile(abs_path):
         response = make_response(send_file(abs_path))
 
-        # ====================================== file run.sh 
-        # For the case of <iframe>, creates another process to simulate another origin
-        run_sh = str(find_upwards(Path(abs_path), "run.sh"))
-        if run_sh != 'None' and run_sh not in process_path_list:
-            popen = subprocess.Popen(run_sh)
-            time.sleep(1)
-            returncode = popen.poll()
-            if returncode is None:
-                process_path_list.append(run_sh)
-            else:
-                # Avoid address in use?
-                if returncode != 98:
-                    print("??????????????????????????????????????????????????")
-                    print("[ERROR] Why the helll *****")
-                    print(f"WE COULD NOT CREATE PROCESS OF {run_sh}. CHECK PLEASE {returncode}")
-                    print("??????????????????????????????????????????????????")
-
         if DEBUG:
             print(f"""
             ----------------
                   Endpoint: {abs_path}
-                  run.sh: {run_sh}
-                  run.sh list: {process_path_list}
             ----------------
             """)
 
