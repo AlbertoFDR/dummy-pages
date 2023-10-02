@@ -46,9 +46,7 @@ pp_list = [
 
 @app.before_first_request
 def emulate_other_origin():
-    print("PITOPITO"*20)
     while True:
-        print("TONTO"*20)
         popen = subprocess.Popen('./run.sh')
         time.sleep(1)
         returncode = popen.poll()
