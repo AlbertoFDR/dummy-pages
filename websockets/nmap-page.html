@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<body>
+	
+		<h1> Local Network timing scan by <b>WebSockets</b></h1>
+		<div id="intro">
+			Page that tries to scan your local network and measures the time to know if the port is open or not. 
+			Brave and Firefox has protections.
+		</div>
+		<br>
+		<div id="times">
+		</div>
+		<script>
+			// Local network 192.168.0.0/24
+			var network = '10.164.47.'
+			times = document.getElementById('times');
+			for(let i = 1; i < 256; i++){
+				var ip = `${network}${i}`
+				var endpoint = `${network}${i}:1234/`
+				var socket = new WebSocket(`ws://${endpoint}`);
+				socket.start = performance.now();
+				socket.ip = ip; 
+				//socket.onopen = function(e) {
+				//  console.log("[open] Connection established");
+				//  console.log("Sending to server");
+				//  socket.send("My name is John");
+				//};
+				//
+				//socket.onmessage = function(event) {
+				//  console.log(`[message] Data received from server: ${event.data}`);
+				//};
+				//
+				//socket.onclose = function(event) {
+				//  if (event.wasClean) {
+				//    console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+				//  } else {
+				//    // e.g. server process killed or network down
+				//    // event.code is usually 1006 in this case
+				//    console.log('[close] Connection died');
+				//  }
+				//};
+				//
+				//socket.onerror = function(error) {
+				//	console.log(`[error] ${error.code} ${error.reason}`);
+				//};
+				socket.onerror = function() { 
+					console.log(this.ip + ": " + (performance.now() - this.start) + " ms"); 
+					times.innerHTML += "<pre>" + this.ip + ": " + (performance.now() - this.start) + " ms"+ "</pre>";
+				};
+				socket.onopen = function() { 
+					console.log(this.ip + ": " + (performance.now() - this.start) + " ms"); 
+					times.innerHTML += "<pre>[OPEN FOR WEBSOCKET]" + this.ip + ": " + (performance.now() - this.start) + " ms"+ "</pre>";
+				};
+			}
+		</script>
+	</body>
+</html>
