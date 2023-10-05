@@ -1,6 +1,6 @@
 # dummy-pages
 
-I create this project as testing environment. In other words, this toy project allows emulating more than one origin (creating two listen ports 1234 and 5000) and to check how the browser works with a different set of server headers (e.g., CSP, Permissions-policies, ...).
+I create this project as testing environment. In other words, this toy project allows emulating more than one origin (creating two listen ports 1234 and 5000) and to check how the browser works with a different set of server headers (e.g., CSP, Permissions-policies, ...). It should work the secure origin for testing (localhost/127.0.0.1) because is usually (NOT ALWAYS) considered as trustworthy origin.
 
 ## Other similar projects
 - https://github.com/GoogleChrome/samples/tree/gh-pages -- https://googlechrome.github.io/samples/allow-popups-to-escape-sandbox/index.html
