@@ -8,3 +8,4 @@ I create this project as testing environment. In other words, this toy project a
 - https://canhas.report/permissions-policy
 - https://dev-pages.brave.software/
 - https://webdbg.com/test/
+- Chromium web tests itself: https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/web_tests/
