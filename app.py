@@ -37,8 +37,9 @@ csp_list = [
 # Permissions-Policy: <directive> <allowlist>
 # === Directives:
 # 'accelerometer', 'ambient-light-sensor', 'autoplay', 'battery', 'camera', 'display-capture', 'document-domain', 'encrypted-media', 'execution-while-not-rendered', 'execution-while-out-of-viewport', 'fullscreen', 'gamepad', 'geolocation', 'gyroscope', 'hid', 'identity-credentials-get', 'idle-detection', 'local-fonts', 'magnetometer', 'microphone', 'midi', 'otp-credentials', 'payment', 'picture-in-picture', 'publickey-credentials-create', 'publickey-credentials-get', 'screen-wake-lock', 'serial', 'speaker-selection', 'storage-access', 'usb', 'web-share', 'window-management', 'xr-spatial-tracking'
-pp_value = -1 
+pp_value = -1
 pp_list = [
+    "geolocation=()",
     "geolocation=*",
     "geolocation=(self 'https://a.example.com' 'https://b.example.com')",
     "picture-in-picture=(), geolocation=(self https://example.com), camera=*",
@@ -46,14 +47,13 @@ pp_list = [
 
 @app.before_first_request
 def emulate_other_origin():
-    while True:
-        popen = subprocess.Popen('./run.sh')
-        time.sleep(1)
-        returncode = popen.poll()
-        if returncode is None:
-            return
-        else:
-            print(f"[ERROR] Error launching run.sh for emulating another origin. Return code: {returncode}")
+    popen = subprocess.Popen('./run.sh')
+    time.sleep(1)
+    returncode = popen.poll()
+    if returncode is None:
+        return
+    else:
+        print(f"[ERROR] Error launching run.sh for emulating another origin. Return code: {returncode}")
 
 @app.route('/', defaults={'req_path': ''})
 @app.route('/<path:req_path>')
@@ -97,13 +97,23 @@ def dir(req_path):
             pp = open(pp_file, 'r').read().replace('\n', '') 
         elif pp_value > -1:
             response.headers['Permissions-Policy'] = pp_list[pp_value] 
-            pp = pp_list[value]
+            pp = pp_list[pp_value]
+        
+        # === Reporting
+        # report_to = '{"group":"default","max_age":1800,"endpoints":[{"url":"https://prueba.report-uri.com/a/d/g"}],"include_subdomains":true}'
+        # pp_report = "fullscreen=()"
+        # response.headers['Permissions-Policy'] = "fullscreen=*"
+        # response.headers['Report-To'] = report_to
+        # response.headers['Permissions-Policy-Report-Only'] = pp_report 
+        #response.headers['Reporting-Endpoints'] = 'main-endpoint="https://webhook.site/7c05a5c7-9e36-478a-842b-cdcee58bc52a/main", default="https://webhook.site/7c05a5c7-9e36-478a-842b-cdcee58bc52a/default"'
         # =======================================
         print(f"""
         # =============== {abs_path} ===============
         Security Headers:
               CSP: {csp}
               Permission-Policy: {pp}
+              Report-to: {report_to}
+              Permissions-Policy-Report-Only: {pp_report}
         # ======================================================================
         """)
         return response
@@ -126,4 +136,4 @@ def dir(req_path):
 
 if __name__ == "__main__":
     # run
-    app.run(debug=True)
+    app.run(ssl_context=('cert/localhost.crt', 'cert/localhost.key'),debug=True)
