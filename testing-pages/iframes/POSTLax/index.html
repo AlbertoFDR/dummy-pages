@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<p>Creates a cookie, redirects to dummy2.local, dummy2.local creates a POST to dummy.local</p>
+		<p>Don't forget to uncomment the Set-Cookie header</p>
+		<script>
+			setTimeout(()=>{location = "https://dummy2.local/iframes/POSTLax/csrf.html"}, 60000);
+		</script>
+	</body>
+</html>

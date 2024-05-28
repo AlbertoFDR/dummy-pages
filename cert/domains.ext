@@ -6,3 +6,7 @@ subjectAltName = @alt_names
 DNS.1 = localhost
 DNS.2 = dummy.local
 DNS.3 = dummy2.local
+DNS.4 = dummy3.local
+DNS.5 = app.dummy.local
+DNS.6 = app.dummy2.local
+DNS.7 = app.dummy3.local

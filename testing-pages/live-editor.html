@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live HTML Editor (by ChatGPT)</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            margin: 10px 0;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+        }
+        .editor {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+        .output {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-left: 1px solid #ccc;
+            overflow-y: auto;
+        }
+        textarea {
+            width: 100%;
+            height: 70%;
+            box-sizing: border-box;
+        }
+        .html-representation {
+            width: 100%;
+            height: 30%;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            padding: 10px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        .share-button {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Template HTML Editor</h1>
+    <div class="container">
+        <div class="editor">
+            <textarea id="htmlInput" placeholder="Type HTML here..."></textarea>
+            <div class="html-representation" id="htmlRepresentation"></div>
+        </div>
+        <div class="output" id="htmlOutput"></div>
+    </div>
+    <button class="share-button" id="shareButton">Share</button>
+
+    <script>
+        const htmlInput = document.getElementById('htmlInput');
+        const htmlOutput = document.getElementById('htmlOutput');
+        const htmlRepresentation = document.getElementById('htmlRepresentation');
+        const shareButton = document.getElementById('shareButton');
+
+        function updateOutput() {
+            htmlOutput.innerHTML = htmlInput.value;
+            htmlRepresentation.textContent = htmlOutput.innerHTML;
+        }
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        window.addEventListener('load', () => {
+            const htmlContent = getQueryParam('html');
+            if (htmlContent) {
+                htmlInput.value = htmlContent;
+                updateOutput();
+            }
+        });
+
+        htmlInput.addEventListener('input', updateOutput);
+
+        shareButton.addEventListener('click', () => {
+            const htmlContent = encodeURIComponent(htmlInput.value);
+            const shareUrl = `${window.location.origin}${window.location.pathname}?html=${htmlContent}`;
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                alert('URL copied to clipboard!');
+            });
+        });
+    </script>
+</body>
+</html>

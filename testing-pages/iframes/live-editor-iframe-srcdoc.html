@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iframe SrcDoc Live HTML Editor (by ChatGPT)</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            margin: 10px 0;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+        }
+        .editor {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+        .output {
+            width: 50%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-left: 1px solid #ccc;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        textarea {
+            width: 100%;
+            height: 50%;
+            box-sizing: border-box;
+        }
+        .html-representation {
+            width: 100%;
+            height: 20%;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            padding: 10px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+        iframe {
+            width: 100%;
+            height: 80%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+        }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .controls input[type="text"] {
+            margin-bottom: 10px;
+            padding: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .controls label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .controls label input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .share-button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live HTML Editor with iFrame</h1>
+    <div class="container">
+        <div class="editor">
+            <textarea id="htmlInput" placeholder="Type HTML here..."></textarea>
+            <div class="html-representation" id="htmlRepresentation"></div>
+            <div class="controls">
+                <label>
+                    <input type="checkbox" id="allowCheckbox">
+                    Enable 'allow' attribute
+                </label>
+                <input type="text" id="allowInput" placeholder="Set iframe 'allow' attribute" disabled>
+                <label>
+                    <input type="checkbox" id="sandboxCheckbox">
+                    Enable 'sandbox' attribute
+                </label>
+                <input type="text" id="sandboxInput" placeholder="Set iframe 'sandbox' attribute" disabled>
+            </div>
+            <button class="share-button" id="shareButton">Share</button>
+        </div>
+        <div class="output">
+            <iframe id="htmlOutput" sandbox=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        const htmlInput = document.getElementById('htmlInput');
+        const htmlOutput = document.getElementById('htmlOutput');
+        const htmlRepresentation = document.getElementById('htmlRepresentation');
+        const allowCheckbox = document.getElementById('allowCheckbox');
+        const allowInput = document.getElementById('allowInput');
+        const sandboxCheckbox = document.getElementById('sandboxCheckbox');
+        const sandboxInput = document.getElementById('sandboxInput');
+        const shareButton = document.getElementById('shareButton');
+
+        function updateIframe() {
+            htmlOutput.srcdoc = htmlInput.value;
+            let iframeCode = `<iframe srcdoc="${htmlInput.value.replace(/"/g, '&quot;')}"`;
+
+            if (allowCheckbox.checked) {
+                htmlOutput.setAttribute('allow', allowInput.value);
+                iframeCode += ` allow="${allowInput.value.replace(/"/g, '&quot;')}"`;
+            } else {
+                htmlOutput.removeAttribute('allow');
+            }
+
+            if (sandboxCheckbox.checked) {
+                htmlOutput.setAttribute('sandbox', sandboxInput.value);
+                iframeCode += ` sandbox="${sandboxInput.value.replace(/"/g, '&quot;')}"`;
+            } else {
+                htmlOutput.removeAttribute('sandbox');
+            }
+
+            iframeCode += '></iframe>';
+            htmlRepresentation.textContent = iframeCode;
+        }
+
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                html: params.get('html') || '',
+                allow: params.has('allow') ? params.get('allow') || '' : null,
+                sandbox: params.has('sandbox') ? params.get('sandbox') || '' : null
+            };
+        }
+
+        function generateShareableURL() {
+            const params = new URLSearchParams();
+            params.set('html', htmlInput.value);
+            if (allowCheckbox.checked) {
+                params.set('allow', allowInput.value);
+            } else {
+                params.delete('allow');
+            }
+            if (sandboxCheckbox.checked) {
+                params.set('sandbox', sandboxInput.value);
+            } else {
+                params.delete('sandbox');
+            }
+            return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+        }
+
+        function copyToClipboard(text) {
+            const tempInput = document.createElement('input');
+            document.body.appendChild(tempInput);
+            tempInput.value = text;
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('URL copied to clipboard');
+        }
+
+        htmlInput.addEventListener('input', updateIframe);
+        allowCheckbox.addEventListener('change', () => {
+            allowInput.disabled = !allowCheckbox.checked;
+            updateIframe();
+        });
+
+        allowInput.addEventListener('input', updateIframe);
+
+        sandboxCheckbox.addEventListener('change', () => {
+            sandboxInput.disabled = !sandboxCheckbox.checked;
+            updateIframe();
+        });
+
+        sandboxInput.addEventListener('input', updateIframe);
+
+        shareButton.addEventListener('click', () => {
+            const shareableURL = generateShareableURL();
+            copyToClipboard(shareableURL);
+        });
+
+        window.addEventListener('load', () => {
+            const queryParams = getQueryParams();
+
+            if (queryParams.html) {
+                htmlInput.value = queryParams.html;
+            }
+
+            if (queryParams.allow !== null) {
+                allowCheckbox.checked = true;
+                allowInput.disabled = false;
+                allowInput.value = queryParams.allow;
+            }
+
+            if (queryParams.sandbox !== null) {
+                sandboxCheckbox.checked = true;
+                sandboxInput.disabled = false;
+                sandboxInput.value = queryParams.sandbox;
+            }
+
+            updateIframe();
+        });
+    </script>
+</body>
+</html>
