@@ -1,4 +1,4 @@
-# dummy-pages
+# dummy-pages ([demo](https://albertofdr.github.io/dummy-pages/testing-pages/live-editor.html))
 
 I create this project as testing environment. In other words, this toy project allows emulating more than one origin (`dummyX.local`&`app.dummyX.local`) and to check how the browser works with a different set of server headers and configurations (e.g., CSP, Cookies, Permissions-policies, ...). 
 
